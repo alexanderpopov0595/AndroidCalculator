@@ -1,7 +1,9 @@
 <resources>
     <string name="app_name">AndroidCalculator</string>
     <string name="clear">C</string>
-    <string name="delete">⌫</string>
+    <string name="backspace">⌫</string>
+    <string name="open_bracket">(</string>
+    <string name="close_bracket">)</string>
     <string name="square_root">√</string>
     <string name="percent">%</string>
     <string name="pow">x²</string>
@@ -9,7 +11,7 @@
     <string name="multiplication">x</string>
     <string name="subtraction">-</string>
     <string name="addition">+</string>
-    <string name="result">=</string>
+    <string name="execute">=</string>
     <string name="point">.</string>
     <string name="zero">0</string>
     <string name="one">1</string>
