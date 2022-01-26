@@ -39,7 +39,12 @@ public class CalculatorServiceImpl implements CalculatorService {
 
     @Override
     public double root(double a, double b) {
-        double power = power(a, 1/b);
-        return Math.round(power);
+        double power = power(a, 1.0/b);
+        return (double) Math.round(power);
+    }
+
+    @Override
+    public double percent(double a) {
+        return a / 100;
     }
 }

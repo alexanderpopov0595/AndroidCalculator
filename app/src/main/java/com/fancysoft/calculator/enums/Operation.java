@@ -24,7 +24,9 @@ public enum Operation {
     DIGIT(Set.of('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.')),
     OPEN_BRACKET(Set.of('(')),
     ARITHMETIC(Set.of('+', '-')),
-    ALGEBRAIC(Set.of('x', '/'));
+    ALGEBRAIC(Set.of('x', '/')),
+    EXPONENT(Set.of('^', '√')),
+    UNARY(Set.of('%'));
 
     /**
      * Set of symbols related to concrete operation

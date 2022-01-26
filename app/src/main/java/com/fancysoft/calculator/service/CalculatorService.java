@@ -52,4 +52,11 @@ public interface CalculatorService {
      * @return result
      */
     double root(double a, double b);
+
+    /**
+     * Perform percent operation
+     * @param a - first operand
+     * @return result
+     */
+    double percent(double a);
 }

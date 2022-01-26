@@ -5,6 +5,7 @@ import static org.junit.Assert.assertThrows;
 
 import com.fancysoft.calculator.exception.AppException;
 import com.fancysoft.calculator.service.CalculatorService;
+import com.fancysoft.calculator.utils.Constants;
 
 import org.junit.Test;
 
@@ -18,7 +19,7 @@ public class CalculatorServiceImplTest {
 
         double actual = service.sum(1.0, 2.0);
 
-        assertEquals(expected, actual, 0.0);
+        assertEquals(expected, actual, Constants.DELTA);
     }
 
     @Test
@@ -27,7 +28,7 @@ public class CalculatorServiceImplTest {
 
         double actual = service.subtract(1.0, 2.0);
 
-        assertEquals(expected, actual, 0.0);
+        assertEquals(expected, actual, Constants.DELTA);
     }
 
     @Test
@@ -36,7 +37,7 @@ public class CalculatorServiceImplTest {
 
         double actual = service.multiply(2.0, 3.0);
 
-        assertEquals(expected, actual, 0.0);
+        assertEquals(expected, actual, Constants.DELTA);
     }
 
     @Test
@@ -45,7 +46,7 @@ public class CalculatorServiceImplTest {
 
         double actual = service.divide(6.0, 3.0);
 
-        assertEquals(expected, actual, 0.0);
+        assertEquals(expected, actual, Constants.DELTA);
     }
 
     @Test
@@ -62,7 +63,7 @@ public class CalculatorServiceImplTest {
 
         double actual = service.power(2.0, 3.0);
 
-        assertEquals(expected, actual, 0.0);
+        assertEquals(expected, actual, Constants.DELTA);
     }
 
     @Test
@@ -71,7 +72,7 @@ public class CalculatorServiceImplTest {
 
         double actual = service.root(8.0, 3.0);
 
-        assertEquals(expected, actual, 0.0);
+        assertEquals(expected, actual, Constants.DELTA);
     }
 
     @Test
@@ -80,6 +81,15 @@ public class CalculatorServiceImplTest {
 
         double actual = service.root(125.0, 5.0);
 
-        assertEquals(expected, actual, 0.0);
+        assertEquals(expected, actual, Constants.DELTA);
+    }
+
+    @Test
+    public void shouldPerformPercentOperation() {
+        double expected = 0.05;
+
+        double actual = service.percent(5);
+
+        assertEquals(expected, actual, Constants.DELTA);
     }
 }

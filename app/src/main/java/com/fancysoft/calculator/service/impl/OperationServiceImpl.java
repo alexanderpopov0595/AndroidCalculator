@@ -20,7 +20,7 @@ public class OperationServiceImpl implements OperationService {
 
     @RequiresApi(api = Build.VERSION_CODES.R)
     @Override
-    public Operation getOperationGroup(char operation) {
+    public Operation getOperation(char operation) {
         for (Operation op : Operation.values()) {
             for (char c : op.getSymbols()) {
                 if (c == operation) {
