@@ -40,7 +40,7 @@ public class RPNServiceImpl implements RPNService {
             else if (operation == Operation.OPEN_BRACKET) {
                 stack.push(symbol);
             }
-            else if (operation == Operation.ALGEBRAIC || operation == Operation.ARITHMETIC || operation == Operation.EXPONENT) {
+            else if (operation == Operation.ALGEBRAIC || operation == Operation.ARITHMETIC || operation == Operation.EXPONENT || operation == Operation.UNARY) {
                 result.append(Constants.SPACE);
 
                 while (!stack.isEmpty()) {
@@ -96,15 +96,23 @@ public class RPNServiceImpl implements RPNService {
             if (opService.getOperation(rpn.charAt(i)) == Operation.ALGEBRAIC ||
                     opService.getOperation(rpn.charAt(i)) == Operation.ARITHMETIC ||
                     opService.getOperation(rpn.charAt(i)) == Operation.EXPONENT) {
-                double a = stack.pop();
+                double b = stack.pop(), a = stack.pop();
                 double c;
                 switch(rpn.charAt(i)) {
-                    case '+' : c = calcService.sum(stack.pop(), a); break;
-                    case '-' : c = calcService.subtract(stack.pop(), a); break;
-                    case 'x' : c = calcService.multiply(stack.pop(), a); break;
-                    case '/' : c = calcService.divide(stack.pop(), a); break;
-                    case '^' : c = calcService.power(stack.pop(), a); break;
-                    case '√' : c = calcService.root(a, stack.pop()); break;
+                    case '+' : c = calcService.sum(a, b); break;
+                    case '-' : c = calcService.subtract(a, b); break;
+                    case 'x' : c = calcService.multiply(a, b); break;
+                    case '/' : c = calcService.divide(a, b); break;
+                    case '^' : c = calcService.power(a, b); break;
+                    case '√' : c = calcService.root(b, a); break;
+                    default: throw new AppException(String.format("Can't perform operation: unknown command %c", rpn.charAt(i)));
+                }
+                stack.push(c);
+            }
+            else if(opService.getOperation(rpn.charAt(i)) == Operation.UNARY) {
+                double a = stack.pop();
+                double c;
+                switch (rpn.charAt(i)) {
                     case '%' : c = calcService.percent(a); break;
                     default: throw new AppException(String.format("Can't perform operation: unknown command %c", rpn.charAt(i)));
                 }

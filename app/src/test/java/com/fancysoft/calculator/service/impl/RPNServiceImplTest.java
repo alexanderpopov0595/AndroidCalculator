@@ -74,6 +74,15 @@ public class RPNServiceImplTest {
     }
 
     @Test
+    public void shouldConvertUnaryExpression() {
+        String expected = "8 %";
+
+        String actual = service.convertToRPN("8%");
+
+        assertEquals(expected, actual);
+    }
+
+    @Test
     public void shouldConvertComplexArithmeticExpression() {
         doAnswer(invocation -> {
             Operation op1 = invocation.getArgument(0);
@@ -192,6 +201,20 @@ public class RPNServiceImplTest {
         double expected = 8;
 
         double actual = service.resolveRPN("2 3^");
+
+        assertEquals(expected, actual, Constants.DELTA);
+    }
+
+    @Test
+    public void shouldResolveUnaryRpn() {
+        doAnswer(invocation -> {
+            double a = (double) invocation.getArguments()[0];
+            return a / 100;
+        }).when(calcService).percent(anyDouble());
+
+        double expected = 0.08;
+
+        double actual = service.resolveRPN("8 %");
 
         assertEquals(expected, actual, Constants.DELTA);
     }

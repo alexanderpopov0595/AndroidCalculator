@@ -4,9 +4,11 @@
     <string name="backspace">⌫</string>
     <string name="open_bracket">(</string>
     <string name="close_bracket">)</string>
-    <string name="square_root"><sup>x</sup>√</string>
+<!--    <string name="square_root"><sup>x</sup>√</string>-->
+    <string name="square_root">√</string>
     <string name="percent">%</string>
-    <string name="pow">x<sup>y</sup></string>
+<!--    <string name="pow">x<sup>y</sup></string>-->
+    <string name="pow">^</string>
     <string name="division">/</string>
     <string name="multiplication">x</string>
     <string name="subtraction">-</string>

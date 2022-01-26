@@ -45,6 +45,6 @@ public class CalculatorServiceImpl implements CalculatorService {
 
     @Override
     public double percent(double a) {
-        return a / 100;
+        return divide(a, 100);
     }
 }

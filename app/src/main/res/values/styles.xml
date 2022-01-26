@@ -37,18 +37,18 @@
         <item name="android:textColor">@color/white</item>
         <item name="android:gravity">center</item>
         <item name="android:layout_margin">0.5dp</item>
-    </style>
-    <style name="num_button_style" parent="button_style">
-        <item name="android:background">@color/lightDark</item>
         <item name="android:onClick">input</item>
     </style>
+    <style name="num_button_style" parent="button_style">
+        <item name="android:backgroundTint">@color/lightDark</item>
+    </style>
     <style name="del_button_style" parent="button_style">
-        <item name="android:background">@color/red</item>
+        <item name="android:backgroundTint">@color/red</item>
     </style>
     <style name="op_button_style" parent="button_style">
-        <item name="android:background">@color/orange</item>
+        <item name="android:backgroundTint">@color/orange</item>
     </style>
     <style name="unary_op_button_style" parent="button_style">
-        <item name="android:background">@color/light</item>
+        <item name="android:backgroundTint">@color/light</item>
     </style>
 </resources>
