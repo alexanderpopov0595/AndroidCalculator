@@ -3,6 +3,7 @@ package com.fancysoft.calculator;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -96,8 +97,8 @@ public class MainActivity extends AppCompatActivity {
      * @param view - pressed button
      */
     public void input(View view) {
-        Button button = (Button) view;
-        String command = button.getText().toString();
+        TextView txt = (TextView) view;
+        String command = txt.getText().toString();
         calculator.display(command);
     }
 

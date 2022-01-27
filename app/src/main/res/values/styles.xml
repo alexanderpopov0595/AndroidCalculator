@@ -40,15 +40,15 @@
         <item name="android:onClick">input</item>
     </style>
     <style name="num_button_style" parent="button_style">
-        <item name="android:backgroundTint">@color/lightDark</item>
+        <item name="android:background">@color/lightDark</item>
     </style>
     <style name="del_button_style" parent="button_style">
-        <item name="android:backgroundTint">@color/red</item>
+        <item name="android:background">@color/red</item>
     </style>
     <style name="op_button_style" parent="button_style">
-        <item name="android:backgroundTint">@color/orange</item>
+        <item name="android:background">@color/orange</item>
     </style>
     <style name="unary_op_button_style" parent="button_style">
-        <item name="android:backgroundTint">@color/light</item>
+        <item name="android:background">@color/light</item>
     </style>
 </resources>

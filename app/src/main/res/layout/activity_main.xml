@@ -11,91 +11,91 @@
         style="@style/numpad_style">
         <LinearLayout
             style="@style/numpad_row_style">
-            <Button
+            <TextView
                 style="@style/unary_op_button_style"
                 android:text="@string/open_bracket" />
-            <Button
+            <TextView
                 style="@style/unary_op_button_style"
                 android:text="@string/close_bracket" />
-            <Button
+            <TextView
                 style="@style/del_button_style"
                 android:text="@string/clear"
                 android:onClick="clear"/>
-            <Button
+            <TextView
                 style="@style/del_button_style"
                 android:text="@string/backspace"
                 android:onClick="backspace"/>
         </LinearLayout>
         <LinearLayout
             style="@style/numpad_row_style">
-            <Button
+            <TextView
                 style="@style/unary_op_button_style"
                 android:text="@string/percent" />
-            <Button
+            <TextView
                 style="@style/unary_op_button_style"
                 android:text="@string/square_root"/>
-            <Button
+            <TextView
                 style="@style/unary_op_button_style"
                 android:text="@string/pow"/>
-            <Button
+            <TextView
                 style="@style/op_button_style"
                 android:text="@string/division"/>
         </LinearLayout>
         <LinearLayout
             style="@style/numpad_row_style">
-            <Button
+            <TextView
                 style="@style/num_button_style"
                 android:text="@string/seven"/>
-            <Button
+            <TextView
                 style="@style/num_button_style"
                 android:text="@string/eight"/>
-            <Button
+            <TextView
                 style="@style/num_button_style"
                 android:text="@string/nine"/>
-            <Button
+            <TextView
                 style="@style/op_button_style"
                 android:text="@string/multiplication"/>
         </LinearLayout>
         <LinearLayout
             style="@style/numpad_row_style">
-            <Button
+            <TextView
                 style="@style/num_button_style"
                 android:text="@string/four"/>
-            <Button
+            <TextView
                 style="@style/num_button_style"
                 android:text="@string/five"/>
-            <Button
+            <TextView
                 style="@style/num_button_style"
                 android:text="@string/six"/>
-            <Button
+            <TextView
                 style="@style/op_button_style"
                 android:text="@string/addition"/>
         </LinearLayout>
         <LinearLayout
             style="@style/numpad_row_style">
-            <Button
+            <TextView
                 style="@style/num_button_style"
                 android:text="@string/one"/>
-            <Button
+            <TextView
                 style="@style/num_button_style"
                 android:text="@string/two"/>
-            <Button
+            <TextView
                 style="@style/num_button_style"
                 android:text="@string/three"/>
-            <Button
+            <TextView
                 style="@style/op_button_style"
                 android:text="@string/subtraction"/>
         </LinearLayout>
         <LinearLayout
             style="@style/numpad_row_style">
-            <Button
+            <TextView
                 style="@style/num_button_style"
                 android:layout_weight="2"
                 android:text="@string/zero"/>
-            <Button
+            <TextView
                 style="@style/num_button_style"
                 android:text="@string/point"/>
-            <Button
+            <TextView
                 style="@style/op_button_style"
                 android:text="@string/execute"
                 android:onClick="execute"/>
