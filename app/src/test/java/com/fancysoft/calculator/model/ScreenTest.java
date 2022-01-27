@@ -192,6 +192,39 @@ public class ScreenTest {
         assertEquals(expected, actual);
     }
 
+    @Test
+    public void shouldReturnScreenState() {
+        setField("mode", ScreenMode.CONTINUE);
+        getField("view", TextView.class).setText("123");
+
+        String expectedExpression = "123";
+        ScreenMode expectedScreenMode = ScreenMode.CONTINUE;
+
+        ScreenState state = screen.getScreenState();
+
+        String actualExpression = state.getExpression();
+        ScreenMode actualScreenMode = state.getMode();
+
+        assertEquals(expectedExpression, actualExpression);
+        assertEquals(expectedScreenMode, actualScreenMode);
+    }
+
+    @Test
+    public void shouldSetScreenState() {
+        String expectedExpression = "123";
+        ScreenMode expectedScreenMode = ScreenMode.CONTINUE;
+
+        ScreenState state = new ScreenState("123", ScreenMode.CONTINUE);
+
+        screen.setScreenState(state);
+
+        String actualExpression =  getField("view", TextView.class).getText().toString();
+        ScreenMode actualScreenMode = getField("mode", ScreenMode.class);
+
+        assertEquals(expectedExpression, actualExpression);
+        assertEquals(expectedScreenMode, actualScreenMode);
+    }
+
     private <T> T getField(String fieldName, Class<T> clazz) {
         Field field = Helper.getField(screen, fieldName);
         return Helper.getField(field, screen, clazz);

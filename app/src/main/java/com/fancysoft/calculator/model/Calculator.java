@@ -1,6 +1,7 @@
 package com.fancysoft.calculator.model;
 
 import com.fancysoft.calculator.service.RPNService;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 /**
@@ -12,6 +13,7 @@ public class Calculator {
     /**
      * Manages screen's operations
      */
+    @Getter
     private final Screen screen;
     /**
      * Converts expressions to RPN form and resolves it

@@ -3,7 +3,7 @@ package com.fancysoft.calculator.service.impl;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
 
-import com.fancysoft.calculator.exception.AppException;
+import com.fancysoft.calculator.exception.model.AppException;
 import com.fancysoft.calculator.service.CalculatorService;
 import com.fancysoft.calculator.utils.Constants;
 

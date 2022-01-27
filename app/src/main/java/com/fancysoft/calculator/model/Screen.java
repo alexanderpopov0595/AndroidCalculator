@@ -21,6 +21,7 @@ public class Screen {
 
     public Screen(TextView view) {
         this.view = view;
+        view.setText(Constants.SCREEN_DEFAULT_VALUE);
         mode = ScreenMode.START;
     }
 
@@ -113,4 +114,22 @@ public class Screen {
     public String getExpression() {
         return view.getText().toString();
     }
+
+    /**
+     * Retrieves screen data
+     * @return screen state
+     */
+    public ScreenState getScreenState() {
+        return new ScreenState(view.getText().toString(), mode);
+    }
+
+    /**
+     * Sets screen data
+     * @param state - transfer object containing entered expression and screen mode
+     */
+    public void setScreenState(ScreenState state) {
+        view.setText(state.getExpression());
+        mode = state.getMode();
+    }
+
 }

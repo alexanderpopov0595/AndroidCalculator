@@ -19,4 +19,9 @@ public class Constants {
      * Space symbol for RPN operations
      */
     public static final char SPACE = ' ';
+
+    /**
+     * Key to save screen state in bundle
+     */
+    public static final String SCREEN_STATE = "SCREEN_STATE";
 }

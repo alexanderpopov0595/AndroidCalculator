@@ -1,4 +1,4 @@
-package com.fancysoft.calculator.exception;
+package com.fancysoft.calculator.exception.model;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

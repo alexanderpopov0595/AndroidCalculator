@@ -5,7 +5,7 @@ import android.os.Build;
 import androidx.annotation.RequiresApi;
 
 import com.fancysoft.calculator.enums.Operation;
-import com.fancysoft.calculator.exception.AppException;
+import com.fancysoft.calculator.exception.model.AppException;
 import com.fancysoft.calculator.service.CalculatorService;
 import com.fancysoft.calculator.service.OperationService;
 import com.fancysoft.calculator.service.RPNService;

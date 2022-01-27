@@ -1,6 +1,6 @@
 package com.fancysoft.calculator.service.impl;
 
-import com.fancysoft.calculator.exception.AppException;
+import com.fancysoft.calculator.exception.model.AppException;
 import com.fancysoft.calculator.service.CalculatorService;
 
 /**
