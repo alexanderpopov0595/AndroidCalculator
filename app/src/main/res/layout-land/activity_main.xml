@@ -12,6 +12,12 @@
         <LinearLayout
             style="@style/numpad_row_style">
             <TextView
+                style="@style/unary_op_button_style"
+                android:text="@string/open_bracket" />
+            <TextView
+                style="@style/unary_op_button_style"
+                android:text="@string/close_bracket" />
+            <TextView
                 style="@style/del_button_style"
                 android:text="@string/clear"
                 android:onClick="clear"/>
@@ -29,6 +35,12 @@
         <LinearLayout
             style="@style/numpad_row_style">
             <TextView
+                style="@style/unary_op_button_style"
+                android:text="@string/sin" />
+            <TextView
+                style="@style/unary_op_button_style"
+                android:text="@string/cot" />
+            <TextView
                 style="@style/num_button_style"
                 android:text="@string/seven"/>
             <TextView
@@ -43,6 +55,12 @@
         </LinearLayout>
         <LinearLayout
             style="@style/numpad_row_style">
+            <TextView
+                style="@style/unary_op_button_style"
+                android:text="@string/tan" />
+            <TextView
+                style="@style/unary_op_button_style"
+                android:text="@string/cot" />
             <TextView
                 style="@style/num_button_style"
                 android:text="@string/four"/>
@@ -59,6 +77,12 @@
         <LinearLayout
             style="@style/numpad_row_style">
             <TextView
+                style="@style/unary_op_button_style"
+                android:text="@string/square_root" />
+            <TextView
+                style="@style/unary_op_button_style"
+                android:text="@string/square_pow" />
+            <TextView
                 style="@style/num_button_style"
                 android:text="@string/one"/>
             <TextView
@@ -73,6 +97,12 @@
         </LinearLayout>
         <LinearLayout
             style="@style/numpad_row_style">
+            <TextView
+                style="@style/unary_op_button_style"
+                android:text="@string/root" />
+            <TextView
+                style="@style/unary_op_button_style"
+                android:text="@string/pow" />
             <TextView
                 style="@style/num_button_style"
                 android:layout_weight="2"
