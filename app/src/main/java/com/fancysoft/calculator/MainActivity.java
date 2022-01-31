@@ -2,7 +2,6 @@ package com.fancysoft.calculator;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,6 +18,8 @@ import com.fancysoft.calculator.service.impl.OperationServiceImpl;
 import com.fancysoft.calculator.service.impl.RPNServiceImpl;
 import com.fancysoft.calculator.utils.Constants;
 
+import lombok.Getter;
+
 /**
  * Main app's controller
  */
@@ -27,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Calculator app's backend
      */
+    @Getter
     private Calculator calculator;
     /**
      * Handles app's exceptions
@@ -43,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Saves calculator's screen state
+     *
      * @param outState - transfer object
      */
     @Override
@@ -53,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Restores calc state
+     *
      * @param savedInstanceState - transfer object with saved data
      */
     @Override
@@ -78,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Calls calculator's clear method
+     *
      * @param view - pressed button
      */
     public void clear(View view) {
@@ -86,6 +91,7 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Calls calculator's backspace method
+     *
      * @param view - pressed button
      */
     public void backspace(View view) {
@@ -94,6 +100,7 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Takes pressed button's name and passes it's value to calculator's display method
+     *
      * @param view - pressed button
      */
     public void input(View view) {
@@ -105,6 +112,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Calls calculator's execute method
      * If some exception acquires, passes exception to handler's method
+     *
      * @param view - pressed button
      */
     public void execute(View view) {
@@ -114,5 +122,4 @@ public class MainActivity extends AppCompatActivity {
             handler.handleException(e);
         }
     }
-
 }
