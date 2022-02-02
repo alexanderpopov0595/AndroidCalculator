@@ -4,6 +4,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.fancysoft.calculator.service.CommandTransformer;
 import com.fancysoft.calculator.service.RPNService;
 
 import org.junit.Test;
@@ -20,14 +21,19 @@ public class CalculatorTest {
     @Mock
     private Screen screen;
     @Mock
+    private CommandTransformer transformer;
+    @Mock
     private RPNService service;
     @InjectMocks
     private Calculator calculator;
 
     @Test
     public void shouldDisplayCommand() {
+        when(transformer.transform(anyString())).thenReturn("transformed command");
+
         calculator.display("command");
 
+        verify(transformer).transform(anyString());
         verify(screen).display(anyString());
     }
 

@@ -11,9 +11,11 @@ import com.fancysoft.calculator.model.Calculator;
 import com.fancysoft.calculator.model.Screen;
 import com.fancysoft.calculator.model.ScreenState;
 import com.fancysoft.calculator.service.CalculatorService;
+import com.fancysoft.calculator.service.CommandTransformer;
 import com.fancysoft.calculator.service.OperationService;
 import com.fancysoft.calculator.service.RPNService;
 import com.fancysoft.calculator.service.impl.CalculatorServiceImpl;
+import com.fancysoft.calculator.service.impl.CommandTransformerImpl;
 import com.fancysoft.calculator.service.impl.OperationServiceImpl;
 import com.fancysoft.calculator.service.impl.RPNServiceImpl;
 import com.fancysoft.calculator.utils.Constants;
@@ -72,11 +74,13 @@ public class MainActivity extends AppCompatActivity {
     private void run() {
         Screen screen = new Screen(findViewById(R.id.screen));
 
+        CommandTransformer transformer = new CommandTransformerImpl();
+
         OperationService opService = new OperationServiceImpl();
         CalculatorService calcService = new CalculatorServiceImpl();
         RPNService service = new RPNServiceImpl(opService, calcService);
 
-        calculator = new Calculator(screen, service);
+        calculator = new Calculator(screen, transformer, service);
         handler = new ExceptionHandler(this);
     }
 

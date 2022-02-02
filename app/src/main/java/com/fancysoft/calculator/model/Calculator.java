@@ -1,5 +1,6 @@
 package com.fancysoft.calculator.model;
 
+import com.fancysoft.calculator.service.CommandTransformer;
 import com.fancysoft.calculator.service.RPNService;
 
 import java.util.List;
@@ -19,6 +20,10 @@ public class Calculator {
     @Getter
     private final Screen screen;
     /**
+     * Converts button's label to expression form command
+     */
+    private final CommandTransformer transformer;
+    /**
      * Converts expressions to RPN form and resolves it
      */
     private final RPNService service;
@@ -28,6 +33,9 @@ public class Calculator {
      * @param command - button's command
      */
     public void display(String command) {
+        System.out.println("Command:" + command);
+        command = transformer.transform(command);
+        System.out.println("Command after:" + command);
         screen.display(command);
     }
 
