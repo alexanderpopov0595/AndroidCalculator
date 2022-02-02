@@ -21,5 +21,5 @@ public interface OperationService {
      * @param operation - symbol possibly related to the one of operations
      * @return operation type if symbol is found
      */
-    Operation getOperation(char operation);
+    Operation getOperation(String operation);
 }

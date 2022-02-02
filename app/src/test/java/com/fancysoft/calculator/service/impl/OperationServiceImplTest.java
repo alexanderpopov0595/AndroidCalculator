@@ -14,19 +14,10 @@ public class OperationServiceImplTest {
     private final OperationService service = new OperationServiceImpl();
 
     @Test
-    public void shouldReturnSpaceOperationGroup() {
-        Operation expected = Operation.SPACE;
-
-        Operation actual = service.getOperation(' ');
-
-        assertEquals(expected, actual);
-    }
-
-    @Test
     public void shouldReturnCloseBracketOperationGroup() {
         Operation expected = Operation.CLOSE_BRACKET;
 
-        Operation actual = service.getOperation(')');
+        Operation actual = service.getOperation(")");
 
         assertEquals(expected, actual);
     }
@@ -35,7 +26,7 @@ public class OperationServiceImplTest {
     public void shouldReturnDigitOperationGroup() {
         Operation expected = Operation.DIGIT;
 
-        Operation actual = service.getOperation('3');
+        Operation actual = service.getOperation("3");
 
         assertEquals(expected, actual);
     }
@@ -44,7 +35,7 @@ public class OperationServiceImplTest {
     public void shouldReturnOpenBracketOperationGroup() {
         Operation expected = Operation.OPEN_BRACKET;
 
-        Operation actual = service.getOperation('(');
+        Operation actual = service.getOperation("(");
 
         assertEquals(expected, actual);
     }
@@ -53,7 +44,7 @@ public class OperationServiceImplTest {
     public void shouldReturnArithmeticOperationGroup() {
         Operation expected = Operation.ARITHMETIC;
 
-        Operation actual = service.getOperation('+');
+        Operation actual = service.getOperation("+");
 
         assertEquals(expected, actual);
     }
@@ -62,7 +53,7 @@ public class OperationServiceImplTest {
     public void shouldReturnAlgebraicOperationGroup() {
         Operation expected = Operation.ALGEBRAIC;
 
-        Operation actual = service.getOperation('x');
+        Operation actual = service.getOperation("x");
 
         assertEquals(expected, actual);
     }

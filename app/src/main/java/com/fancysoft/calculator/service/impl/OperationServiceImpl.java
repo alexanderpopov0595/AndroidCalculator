@@ -20,14 +20,12 @@ public class OperationServiceImpl implements OperationService {
 
     @RequiresApi(api = Build.VERSION_CODES.R)
     @Override
-    public Operation getOperation(char operation) {
+    public Operation getOperation(String operation) {
         for (Operation op : Operation.values()) {
-            for (char c : op.getSymbols()) {
-                if (c == operation) {
-                    return op;
-                }
+            if (op.isOperation(operation)) {
+                return op;
             }
         }
-        throw new AppException(String.format("RPN error: operation %c is unknown", operation));
+        throw new AppException(String.format("RPN error: operation %s is unknown", operation));
     }
 }

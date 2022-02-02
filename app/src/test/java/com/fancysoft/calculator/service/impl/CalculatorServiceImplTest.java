@@ -92,4 +92,40 @@ public class CalculatorServiceImplTest {
 
         assertEquals(expected, actual, Constants.DELTA);
     }
+
+    @Test
+    public void shouldPerformSinOperation() {
+        double expected = 1.0;
+
+        double actual = service.sin(90);
+
+        assertEquals(expected, actual, Constants.DELTA);
+    }
+
+    @Test
+    public void shouldPerformCosOperation() {
+        double expected = 0.0;
+
+        double actual = service.cos(90);
+
+        assertEquals(expected, actual, Constants.DELTA);
+    }
+
+    @Test
+    public void shouldPerformTanOperation() {
+        double expected = 0.0;
+
+        double actual = service.tan(0);
+
+        assertEquals(expected, actual, Constants.DELTA);
+    }
+
+    @Test
+    public void shouldPerformCotOperation() {
+        double expected = 1.0;
+
+        double actual = service.cot(45);
+
+        assertEquals(expected, actual, Constants.DELTA);
+    }
 }

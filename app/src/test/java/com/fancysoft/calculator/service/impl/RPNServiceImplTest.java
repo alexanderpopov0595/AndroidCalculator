@@ -1,10 +1,11 @@
 package com.fancysoft.calculator.service.impl;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyChar;
 import static org.mockito.ArgumentMatchers.anyDouble;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doAnswer;
 
 import com.fancysoft.calculator.enums.Operation;
@@ -20,6 +21,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import java.util.List;
+
 @RunWith(MockitoJUnitRunner.class)
 public class RPNServiceImplTest {
 
@@ -33,51 +36,49 @@ public class RPNServiceImplTest {
     @Before
     public void init() {
         doAnswer(invocation -> {
-            char operation = invocation.getArgument(0);
+            String operation = invocation.getArgument(0);
 
             for (Operation op : Operation.values()) {
-                for (char c : op.getSymbols()) {
-                    if (c == operation) {
-                        return op;
-                    }
+                if (op.isOperation(operation)) {
+                    return op;
                 }
             }
-            throw new AppException(String.format("RPN error: operation %c is unknown", operation));
-        }).when(opService).getOperation(anyChar());
+            throw new AppException(String.format("RPN error: operation %s is unknown", operation));
+        }).when(opService).getOperation(anyString());
     }
 
     @Test
     public void shouldConvertSimpleArithmeticExpression() {
-        String expected = "1 2+";
+        List<String> expected = List.of("1", "2", "+");
 
-        String actual = service.convertToRPN("1+2");
+        List<String> actual = service.convertToRPN("1 + 2");
 
         assertEquals(expected, actual);
     }
 
     @Test
     public void shouldConvertSimpleAlgebraicExpression() {
-        String expected = "1 2x";
+        List<String> expected = List.of("1", "2", "x");
 
-        String actual = service.convertToRPN("1x2");
+        List<String> actual = service.convertToRPN("1 x 2");
 
         assertEquals(expected, actual);
     }
 
     @Test
     public void shouldConvertSimpleExponentExpression() {
-        String expected = "1 2^";
+        List<String> expected = List.of("1", "2", "^");
 
-        String actual = service.convertToRPN("1^2");
+        List<String> actual = service.convertToRPN("1 ^ 2");
 
         assertEquals(expected, actual);
     }
 
     @Test
     public void shouldConvertUnaryExpression() {
-        String expected = "8 %";
+        List<String> expected = List.of("8", "%");
 
-        String actual = service.convertToRPN("8%");
+        List<String> actual = service.convertToRPN("8 %");
 
         assertEquals(expected, actual);
     }
@@ -91,9 +92,9 @@ public class RPNServiceImplTest {
             return op1.ordinal() > op2.ordinal();
         }).when(opService).hasHigherPriority(any(Operation.class), any(Operation.class));
 
-        String expected = "1 2 +3-";
+        List<String> expected = List.of("1", "2", "+", "3", "-");
 
-        String actual = service.convertToRPN("1+2-3");
+        List<String> actual = service.convertToRPN("1 + 2 - 3");
 
         assertEquals(expected, actual);
     }
@@ -107,9 +108,9 @@ public class RPNServiceImplTest {
             return op1.ordinal() > op2.ordinal();
         }).when(opService).hasHigherPriority(any(Operation.class), any(Operation.class));
 
-        String expected = "1 2 /3x";
+        List<String> expected = List.of("1", "2", "/", "3", "x");
 
-        String actual = service.convertToRPN("1/2x3");
+        List<String> actual = service.convertToRPN("1 / 2 x 3");
 
         assertEquals(expected, actual);
     }
@@ -123,9 +124,9 @@ public class RPNServiceImplTest {
             return op1.ordinal() > op2.ordinal();
         }).when(opService).hasHigherPriority(any(Operation.class), any(Operation.class));
 
-        String expected = "2 1 ^4√";
+        List<String> expected = List.of("2", "1", "^", "4", "√");
 
-        String actual = service.convertToRPN("2^1√4");
+        List<String> actual = service.convertToRPN("2 ^ 1 √ 4");
 
         assertEquals(expected, actual);
     }
@@ -139,25 +140,25 @@ public class RPNServiceImplTest {
             return op1.ordinal() > op2.ordinal();
         }).when(opService).hasHigherPriority(any(Operation.class), any(Operation.class));
 
-        String expected = "1 2 3 4 5 ^-x+";
+        List<String> expected = List.of("1", "2", "3", "4", "5", "^", "-", "x", "+");
 
-        String actual = service.convertToRPN("1+2x(3-4^5)");
+        List<String> actual = service.convertToRPN("1 + 2 x ( 3 - 4 ^ 5 )");
 
         assertEquals(expected, actual);
     }
 
     @Test
     public void shouldConvertExpressionWithDots() {
-        String expected = "1.1 2.2+";
+        List<String> expected = List.of("1.1", "2.2", "+");
 
-        String actual = service.convertToRPN("1.1+2.2");
+        List<String> actual = service.convertToRPN("1.1 + 2.2");
 
         assertEquals(expected, actual);
     }
 
     @Test
     public void shouldThrowExceptionWhenOperationIsUnknown() {
-        assertThrows(AppException.class, () -> service.convertToRPN("1?2"));
+        assertThrows(AppException.class, () -> service.convertToRPN("1 ? 2"));
     }
 
     @Test
@@ -170,7 +171,7 @@ public class RPNServiceImplTest {
 
         double expected = 3;
 
-        double actual = service.resolveRPN("1 2+");
+        double actual = service.resolveRPN(List.of("1", "2", "+"));
 
         assertEquals(expected, actual, Constants.DELTA);
     }
@@ -185,7 +186,7 @@ public class RPNServiceImplTest {
 
         double expected = 6;
 
-        double actual = service.resolveRPN("2 3x");
+        double actual = service.resolveRPN(List.of("2", "3", "x"));
 
         assertEquals(expected, actual, Constants.DELTA);
     }
@@ -200,7 +201,7 @@ public class RPNServiceImplTest {
 
         double expected = 8;
 
-        double actual = service.resolveRPN("2 3^");
+        double actual = service.resolveRPN(List.of("2", "3", "^"));
 
         assertEquals(expected, actual, Constants.DELTA);
     }
@@ -214,7 +215,7 @@ public class RPNServiceImplTest {
 
         double expected = 0.08;
 
-        double actual = service.resolveRPN("8 %");
+        double actual = service.resolveRPN(List.of("8", "%"));
 
         assertEquals(expected, actual, Constants.DELTA);
     }
@@ -235,7 +236,7 @@ public class RPNServiceImplTest {
 
         double expected = 0;
 
-        double actual = service.resolveRPN("1 2 +3-");
+        double actual = service.resolveRPN(List.of("1", "2", "+", "3", "-"));
 
         assertEquals(expected, actual, Constants.DELTA);
     }
@@ -256,7 +257,7 @@ public class RPNServiceImplTest {
 
         double expected = 1.5;
 
-        double actual = service.resolveRPN("1 2 /3x");
+        double actual = service.resolveRPN(List.of("1", "2", "/", "3", "x"));
 
         assertEquals(expected, actual, Constants.DELTA);
     }
@@ -277,7 +278,7 @@ public class RPNServiceImplTest {
         }).when(calcService).root(anyDouble(), anyDouble());
         double expected = 2;
 
-        double actual = service.resolveRPN("2 1 ^4√");
+        double actual = service.resolveRPN(List.of("2", "1", "^", "4", "√"));
 
         assertEquals(expected, actual, Constants.DELTA);
     }
@@ -310,7 +311,7 @@ public class RPNServiceImplTest {
 
         double expected = -9.0;
 
-        double actual = service.resolveRPN("1 2 3 2 3 ^-x+");
+        double actual = service.resolveRPN(List.of("1", "2", "3", "2", "3", "^", "-", "x", "+"));
 
         assertEquals(expected, actual, Constants.DELTA);
     }
@@ -342,7 +343,7 @@ public class RPNServiceImplTest {
         }).when(calcService).divide(anyDouble(), anyDouble());
         double expected = 5.4;
 
-        double actual = service.resolveRPN("1 2 3 4 5 /-x+");
+        double actual = service.resolveRPN(List.of("1", "2", "3", "4", "5", "/", "-", "x", "+"));
 
         assertEquals(expected, actual, Constants.DELTA);
     }
@@ -357,13 +358,13 @@ public class RPNServiceImplTest {
 
         double expected = 3.3;
 
-        double actual = service.resolveRPN("1.1 2.2+");
+        double actual = service.resolveRPN(List.of("1.1", "2.2", "+"));
 
         assertEquals(expected, actual, Constants.DELTA);
     }
 
     @Test
     public void shouldThrowExceptionWhenCalculatorOperationIsUnknown() {
-        assertThrows(AppException.class, () -> service.resolveRPN("2 2?"));
+        assertThrows(AppException.class, () -> service.resolveRPN(List.of("2", "2", "?")));
     }
 }

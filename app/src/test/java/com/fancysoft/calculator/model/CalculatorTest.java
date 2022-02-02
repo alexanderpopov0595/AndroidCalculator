@@ -12,6 +12,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import java.util.List;
+
 @RunWith(MockitoJUnitRunner.class)
 public class CalculatorTest {
 
@@ -32,14 +34,14 @@ public class CalculatorTest {
     @Test
     public void shouldExecute() {
         when(screen.getExpression()).thenReturn("expression");
-        when(service.convertToRPN("expression")).thenReturn("rpn");
-        when(service.resolveRPN("rpn")).thenReturn(1.0);
+        when(service.convertToRPN("expression")).thenReturn(List.of("r", "p", "n"));
+        when(service.resolveRPN(List.of("r", "p", "n"))).thenReturn(1.0);
 
         calculator.execute();
 
         verify(screen).getExpression();
         verify(service).convertToRPN("expression");
-        verify(service).resolveRPN("rpn");
+        verify(service).resolveRPN(List.of("r", "p", "n"));
         verify(screen).display(1.0);
     }
 

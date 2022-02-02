@@ -11,6 +11,8 @@ import com.fancysoft.calculator.service.OperationService;
 import com.fancysoft.calculator.service.RPNService;
 import com.fancysoft.calculator.utils.Constants;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
 
 import lombok.RequiredArgsConstructor;
@@ -26,95 +28,98 @@ public class RPNServiceImpl implements RPNService {
 
     @RequiresApi(api = Build.VERSION_CODES.R)
     @Override
-    public String convertToRPN(String expression) {
-        StringBuilder result = new StringBuilder();
-        Stack<Character> stack = new Stack<>();
+    public List<String> convertToRPN(String expression) {
+        List<String> args = splitToArguments(expression);
 
-        for (int i = 0; i < expression.length(); i++) {
-            char symbol = expression.charAt(i);
-            Operation operation = opService.getOperation(symbol);
+        List<String> result = new ArrayList<>();
+        Stack<String> stack = new Stack<>();
+
+        for (String arg : args) {
+            Operation operation = opService.getOperation(arg);
 
             if (operation == Operation.DIGIT) {
-                result.append(symbol);
+                result.add(arg);
             }
             else if (operation == Operation.OPEN_BRACKET) {
-                stack.push(symbol);
+                stack.push(arg);
             }
             else if (operation == Operation.ALGEBRAIC || operation == Operation.ARITHMETIC || operation == Operation.EXPONENT || operation == Operation.UNARY) {
-                result.append(Constants.SPACE);
-
                 while (!stack.isEmpty()) {
-                    char stackSymbol = stack.peek();
-                    Operation stackOperation = opService.getOperation(stackSymbol);
+                    String stackArg = stack.peek();
+                    Operation stackOperation = opService.getOperation(stackArg);
                     if (opService.hasHigherPriority(operation, stackOperation)) {
                         break;
                     }
-                    result.append(stack.pop());
+                    result.add(stack.pop());
                 }
-                stack.push(symbol);
+                stack.push(arg);
             }
             else if (operation == Operation.CLOSE_BRACKET) {
-                result.append(Constants.SPACE);
-
                 while (opService.getOperation(stack.peek()) != Operation.OPEN_BRACKET) {
-                    result.append(stack.pop());
+                    result.add(stack.pop());
                 }
                 stack.pop();
             }
         }
 
         while (!stack.isEmpty()) {
-            result.append(stack.pop());
+            result.add(stack.pop());
         }
-        return result.toString();
+        return result;
+    }
+
+    /**
+     * Splits expression to single arguments chain
+     * @param expression - math expression
+     * @return array of arguments
+     */
+    private List<String> splitToArguments(String expression) {
+        List<String> args = new ArrayList<>();
+        for (String piece : expression.split(Constants.SPACE)) {
+            if (!piece.isEmpty()) {
+                args.add(piece);
+            }
+        }
+        return args;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.R)
     @Override
-    public double resolveRPN(String rpn) {
-        StringBuilder operand = new StringBuilder();
+    public double resolveRPN(List<String> rpn) {
         Stack<Double> stack = new Stack<>();
 
-        for (int i = 0; i < rpn.length(); i++) {
-            char symbol = rpn.charAt(i);
-            Operation operation = opService.getOperation(symbol);
+        for (String arg : rpn) {
+            Operation operation = opService.getOperation(arg);
 
-            if (operation == Operation.SPACE) {
-                continue;
+            if (operation == Operation.DIGIT) {
+                stack.push(Double.parseDouble(arg));
             }
-            else if (operation == Operation.DIGIT) {
-                while(opService.getOperation(rpn.charAt(i)) != Operation.SPACE &&
-                        opService.getOperation(rpn.charAt(i)) == Operation.DIGIT) {
-                    operand.append(rpn.charAt(i++));
-                    if(i == rpn.length()) {
-                        break;
-                    }
-                }
-                stack.push(Double.parseDouble(operand.toString()));
-                operand.setLength(0);
-            }
-            if (opService.getOperation(rpn.charAt(i)) == Operation.ALGEBRAIC ||
-                    opService.getOperation(rpn.charAt(i)) == Operation.ARITHMETIC ||
-                    opService.getOperation(rpn.charAt(i)) == Operation.EXPONENT) {
+            else if (opService.getOperation(arg) == Operation.ALGEBRAIC ||
+                    opService.getOperation(arg) == Operation.ARITHMETIC ||
+                    opService.getOperation(arg) == Operation.EXPONENT) {
                 double b = stack.pop(), a = stack.pop();
                 double c;
-                switch(rpn.charAt(i)) {
-                    case '+' : c = calcService.sum(a, b); break;
-                    case '-' : c = calcService.subtract(a, b); break;
-                    case 'x' : c = calcService.multiply(a, b); break;
-                    case '/' : c = calcService.divide(a, b); break;
-                    case '^' : c = calcService.power(a, b); break;
-                    case '√' : c = calcService.root(b, a); break;
-                    default: throw new AppException(String.format("Can't perform operation: unknown command %c", rpn.charAt(i)));
+                switch(arg) {
+                    case "+" : c = calcService.sum(a, b); break;
+                    case "-" : c = calcService.subtract(a, b); break;
+                    case "x" : c = calcService.multiply(a, b); break;
+                    case "/" : c = calcService.divide(a, b); break;
+                    case "^" : c = calcService.power(a, b); break;
+                    case "√" : c = calcService.root(b, a); break;
+                    default: throw new AppException(String.format("Can't perform operation: unknown command %s", arg));
                 }
                 stack.push(c);
             }
-            else if(opService.getOperation(rpn.charAt(i)) == Operation.UNARY) {
+            else if(opService.getOperation(arg) == Operation.UNARY) {
                 double a = stack.pop();
                 double c;
-                switch (rpn.charAt(i)) {
-                    case '%' : c = calcService.percent(a); break;
-                    default: throw new AppException(String.format("Can't perform operation: unknown command %c", rpn.charAt(i)));
+                switch (arg) {
+                    case "%" : c = calcService.percent(a); break;
+                    case "sin" : c = calcService.sin(a); break;
+                    case "cos" : c = calcService.cos(a); break;
+                    case "tan" : c = calcService.tan(a); break;
+                    case "cot" : c = calcService.cot(a); break;
+                    default: throw new AppException(String.format("Can't perform operation: unknown command %s", arg));
                 }
                 stack.push(c);
             }

@@ -66,4 +66,13 @@ public class Helper {
             throw new RuntimeException(e.getMessage());
         }
     }
+
+    /**
+     * Checks if string value is numeric
+     * @param value - string to check
+     * @return - true if numeric
+     */
+    public static boolean isNumeric(String value) {
+        return value.matches(Constants.NUMERIC_PATTERN);
+    }
 }

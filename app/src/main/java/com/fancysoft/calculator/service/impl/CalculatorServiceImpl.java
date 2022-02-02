@@ -47,4 +47,28 @@ public class CalculatorServiceImpl implements CalculatorService {
     public double percent(double a) {
         return divide(a, 100);
     }
+
+    @Override
+    public double sin(double a) {
+        return Math.sin(toRadians(a));
+    }
+
+    @Override
+    public double cos(double a) {
+        return Math.cos(toRadians(a));
+    }
+
+    @Override
+    public double tan(double a) {
+        return Math.tan(toRadians(a));
+    }
+
+    @Override
+    public double cot(double a) {
+        return 1.0 / tan(a);
+    }
+
+    private double toRadians(double a) {
+        return Math.toRadians(a);
+    }
 }

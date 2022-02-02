@@ -1,6 +1,9 @@
 package com.fancysoft.calculator.model;
 
 import com.fancysoft.calculator.service.RPNService;
+
+import java.util.List;
+
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -33,7 +36,7 @@ public class Calculator {
      */
     public void execute() {
         String expression = screen.getExpression();
-        String rpn = service.convertToRPN(expression);
+        List<String> rpn = service.convertToRPN(expression);
         double result = service.resolveRPN(rpn);
         screen.display(result);
     }

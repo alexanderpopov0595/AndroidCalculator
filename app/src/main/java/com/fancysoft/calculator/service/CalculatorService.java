@@ -59,4 +59,32 @@ public interface CalculatorService {
      * @return result
      */
     double percent(double a);
+
+    /**
+     * Perform sin operation
+     * @param a - operand
+     * @return result
+     */
+    double sin(double a);
+
+    /**
+     * Perform cos operation
+     * @param a - operand
+     * @return result
+     */
+    double cos(double a);
+
+    /**
+     * Perform tan operation
+     * @param a - operand
+     * @return result
+     */
+    double tan(double a);
+
+    /**
+     * Perform cot operation
+     * @param a - operand
+     * @return result
+     */
+    double cot(double a);
 }

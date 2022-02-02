@@ -18,7 +18,9 @@ public class Constants {
     /**
      * Space symbol for RPN operations
      */
-    public static final char SPACE = ' ';
+    public static final String SPACE = " ";
+
+    public static final String NUMERIC_PATTERN = "-?\\d+(\\.\\d+)?";
 
     /**
      * Key to save screen state in bundle
