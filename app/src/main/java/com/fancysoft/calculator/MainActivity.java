@@ -1,9 +1,11 @@
 package com.fancysoft.calculator;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.fancysoft.calculator.exception.handler.ExceptionHandler;
@@ -37,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private ExceptionHandler handler;
 
+    @RequiresApi(api = Build.VERSION_CODES.R)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Inits all components
      */
+    @RequiresApi(api = Build.VERSION_CODES.R)
     private void run() {
         Screen screen = new Screen(findViewById(R.id.screen));
 

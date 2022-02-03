@@ -36,6 +36,8 @@ dependencies {
     annotationProcessor "org.projectlombok:lombok:${lombok_version}"
     testImplementation "org.mockito:mockito-core:${mockito_version}"
     testImplementation "junit:junit:${junit_version}"
+    androidTestImplementation "androidx.test:runner:${androidX_test_version}"
+    androidTestImplementation "androidx.test:rules:${androidX_test_version}"
     androidTestImplementation "androidx.test.ext:junit:${ext_junit_version}"
     androidTestImplementation "androidx.test.espresso:espresso-core:${espresso_core}"
 }

@@ -33,9 +33,7 @@ public class Calculator {
      * @param command - button's command
      */
     public void display(String command) {
-        System.out.println("Command:" + command);
         command = transformer.transform(command);
-        System.out.println("Command after:" + command);
         screen.display(command);
     }
 
