@@ -11,4 +11,9 @@ public interface CommandTransformer {
      * @return expression command
      */
     String transform(String command);
+
+    /**
+     * Loads properties into memory
+     */
+    void init();
 }

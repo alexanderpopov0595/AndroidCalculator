@@ -78,7 +78,8 @@ public class MainActivity extends AppCompatActivity {
     private void run() {
         Screen screen = new Screen(findViewById(R.id.screen));
 
-        CommandTransformer transformer = new CommandTransformerImpl();
+        CommandTransformer transformer = new CommandTransformerImpl(this);
+        transformer.init();
 
         OperationService opService = new OperationServiceImpl();
         CalculatorService calcService = new CalculatorServiceImpl();
