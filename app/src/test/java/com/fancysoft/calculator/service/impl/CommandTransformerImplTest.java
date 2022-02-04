@@ -25,14 +25,14 @@ public class CommandTransformerImplTest {
     @Before
     public void setUp() {
         when(context.getString(R.string.square_pow)).thenReturn("x2");
-        when(context.getString(R.string.pow)).thenReturn(" ^ ");
-        when(context.getString(R.string.root)).thenReturn(" √ ");
+        when(context.getString(R.string.pow)).thenReturn("^");
+        when(context.getString(R.string.root)).thenReturn("√");
         transformer.init();
     }
 
     @Test
     public void shouldTransformCommand() {
-        String expected = " ^ 2 ";
+        String expected = "^2";
 
         String actual = transformer.transform("x2");
 

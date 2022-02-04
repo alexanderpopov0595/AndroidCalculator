@@ -6,9 +6,11 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyDouble;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.when;
 
 import com.fancysoft.calculator.enums.Operation;
 import com.fancysoft.calculator.exception.model.AppException;
+import com.fancysoft.calculator.service.ArgumentSplitterService;
 import com.fancysoft.calculator.service.CalculatorService;
 import com.fancysoft.calculator.service.OperationService;
 import com.fancysoft.calculator.utils.Constants;
@@ -25,6 +27,8 @@ import java.util.List;
 @RunWith(MockitoJUnitRunner.class)
 public class RPNServiceImplTest {
 
+    @Mock
+    private ArgumentSplitterService argsService;
     @Mock
     private OperationService opService;
     @Mock
@@ -48,42 +52,52 @@ public class RPNServiceImplTest {
 
     @Test
     public void shouldConvertSimpleArithmeticExpression() {
+        when(argsService.splitToArguments("1+2")).thenReturn(List.of("1", "+", "2"));
+
         List<String> expected = List.of("1", "2", "+");
 
-        List<String> actual = service.convertToRPN("1 + 2");
+        List<String> actual = service.convertToRPN("1+2");
 
         assertEquals(expected, actual);
     }
 
     @Test
     public void shouldConvertSimpleAlgebraicExpression() {
+        when(argsService.splitToArguments("1x2")).thenReturn(List.of("1", "x", "2"));
+
         List<String> expected = List.of("1", "2", "x");
 
-        List<String> actual = service.convertToRPN("1 x 2");
+        List<String> actual = service.convertToRPN("1x2");
 
         assertEquals(expected, actual);
     }
 
     @Test
     public void shouldConvertSimpleExponentExpression() {
+        when(argsService.splitToArguments("1^2")).thenReturn(List.of("1", "^", "2"));
+
         List<String> expected = List.of("1", "2", "^");
 
-        List<String> actual = service.convertToRPN("1 ^ 2");
+        List<String> actual = service.convertToRPN("1^2");
 
         assertEquals(expected, actual);
     }
 
     @Test
     public void shouldConvertUnaryExpression() {
+        when(argsService.splitToArguments("8%")).thenReturn(List.of("8", "%"));
+
         List<String> expected = List.of("8", "%");
 
-        List<String> actual = service.convertToRPN("8 %");
+        List<String> actual = service.convertToRPN("8%");
 
         assertEquals(expected, actual);
     }
 
     @Test
     public void shouldConvertComplexArithmeticExpression() {
+        when(argsService.splitToArguments("1+2-3")).thenReturn(List.of("1", "+", "2", "-", "3"));
+
         doAnswer(invocation -> {
             Operation op1 = invocation.getArgument(0);
             Operation op2 = invocation.getArgument(1);
@@ -93,13 +107,15 @@ public class RPNServiceImplTest {
 
         List<String> expected = List.of("1", "2", "+", "3", "-");
 
-        List<String> actual = service.convertToRPN("1 + 2 - 3");
+        List<String> actual = service.convertToRPN("1+2-3");
 
         assertEquals(expected, actual);
     }
 
     @Test
     public void shouldConvertComplexAlgebraicExpression() {
+        when(argsService.splitToArguments("1÷2x3")).thenReturn(List.of("1", "÷", "2", "x", "3"));
+
         doAnswer(invocation -> {
             Operation op1 = invocation.getArgument(0);
             Operation op2 = invocation.getArgument(1);
@@ -109,13 +125,15 @@ public class RPNServiceImplTest {
 
         List<String> expected = List.of("1", "2", "÷", "3", "x");
 
-        List<String> actual = service.convertToRPN("1 ÷ 2 x 3");
+        List<String> actual = service.convertToRPN("1÷2x3");
 
         assertEquals(expected, actual);
     }
 
     @Test
     public void shouldConvertComplexExponentExpression() {
+        when(argsService.splitToArguments("2^1√4")).thenReturn(List.of("2", "^", "1", "√", "4"));
+
         doAnswer(invocation -> {
             Operation op1 = invocation.getArgument(0);
             Operation op2 = invocation.getArgument(1);
@@ -125,13 +143,16 @@ public class RPNServiceImplTest {
 
         List<String> expected = List.of("2", "1", "^", "4", "√");
 
-        List<String> actual = service.convertToRPN("2 ^ 1 √ 4");
+        List<String> actual = service.convertToRPN("2^1√4");
 
         assertEquals(expected, actual);
     }
 
     @Test
     public void shouldConvertExpressionWithBrackets() {
+        when(argsService.splitToArguments("1+2x(3-4^5)"))
+                .thenReturn(List.of("1", "+", "2", "x", "(", "3", "-", "4", "^", "5", ")"));
+
         doAnswer(invocation -> {
             Operation op1 = invocation.getArgument(0);
             Operation op2 = invocation.getArgument(1);
@@ -141,23 +162,27 @@ public class RPNServiceImplTest {
 
         List<String> expected = List.of("1", "2", "3", "4", "5", "^", "-", "x", "+");
 
-        List<String> actual = service.convertToRPN("1 + 2 x ( 3 - 4 ^ 5 )");
+        List<String> actual = service.convertToRPN("1+2x(3-4^5)");
 
         assertEquals(expected, actual);
     }
 
     @Test
     public void shouldConvertExpressionWithDots() {
+        when(argsService.splitToArguments("1.1+2.2")).thenReturn(List.of("1.1", "+", "2.2"));
+
         List<String> expected = List.of("1.1", "2.2", "+");
 
-        List<String> actual = service.convertToRPN("1.1 + 2.2");
+        List<String> actual = service.convertToRPN("1.1+2.2");
 
         assertEquals(expected, actual);
     }
 
     @Test
     public void shouldThrowExceptionWhenOperationIsUnknown() {
-        assertThrows(AppException.class, () -> service.convertToRPN("1 ? 2"));
+        when(argsService.splitToArguments("1?2"))
+                .thenReturn(List.of("1", "?", "2"));
+        assertThrows(AppException.class, () -> service.convertToRPN("1?2"));
     }
 
     @Test

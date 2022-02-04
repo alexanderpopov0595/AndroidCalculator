@@ -6,6 +6,7 @@ import androidx.annotation.RequiresApi;
 
 import com.fancysoft.calculator.enums.Operation;
 import com.fancysoft.calculator.exception.model.AppException;
+import com.fancysoft.calculator.service.ArgumentSplitterService;
 import com.fancysoft.calculator.service.CalculatorService;
 import com.fancysoft.calculator.service.OperationService;
 import com.fancysoft.calculator.service.RPNService;
@@ -23,13 +24,14 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class RPNServiceImpl implements RPNService {
 
+    private final ArgumentSplitterService argsService;
     private final OperationService opService;
     private final CalculatorService calcService;
 
     @RequiresApi(api = Build.VERSION_CODES.R)
     @Override
     public List<String> convertToRPN(String expression) {
-        List<String> args = splitToArguments(expression);
+        List<String> args = argsService.splitToArguments(expression);
 
         List<String> result = new ArrayList<>();
         Stack<String> stack = new Stack<>();
@@ -66,21 +68,6 @@ public class RPNServiceImpl implements RPNService {
             result.add(stack.pop());
         }
         return result;
-    }
-
-    /**
-     * Splits expression to single arguments chain
-     * @param expression - math expression
-     * @return array of arguments
-     */
-    private List<String> splitToArguments(String expression) {
-        List<String> args = new ArrayList<>();
-        for (String piece : expression.split(Constants.SPACE)) {
-            if (!piece.isEmpty()) {
-                args.add(piece);
-            }
-        }
-        return args;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.R)

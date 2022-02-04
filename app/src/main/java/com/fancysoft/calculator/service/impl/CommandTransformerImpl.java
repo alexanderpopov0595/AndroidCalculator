@@ -25,9 +25,9 @@ public class CommandTransformerImpl implements CommandTransformer {
     @Override
     @RequiresApi(api = Build.VERSION_CODES.R)
     public void init() {
-        map = Map.of(getResource(R.string.square_pow), " ^ 2 ",
-                getResource(R.string.pow), " ^ ",
-                getResource(R.string.root), " √ ");
+        map = Map.of(getResource(R.string.square_pow), "^2",
+                getResource(R.string.pow), "^",
+                getResource(R.string.root), "√");
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)

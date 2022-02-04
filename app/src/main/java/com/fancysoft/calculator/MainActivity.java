@@ -12,10 +12,12 @@ import com.fancysoft.calculator.exception.handler.ExceptionHandler;
 import com.fancysoft.calculator.model.Calculator;
 import com.fancysoft.calculator.model.Screen;
 import com.fancysoft.calculator.model.ScreenState;
+import com.fancysoft.calculator.service.ArgumentSplitterService;
 import com.fancysoft.calculator.service.CalculatorService;
 import com.fancysoft.calculator.service.CommandTransformer;
 import com.fancysoft.calculator.service.OperationService;
 import com.fancysoft.calculator.service.RPNService;
+import com.fancysoft.calculator.service.impl.ArgumentSplitterServiceImpl;
 import com.fancysoft.calculator.service.impl.CalculatorServiceImpl;
 import com.fancysoft.calculator.service.impl.CommandTransformerImpl;
 import com.fancysoft.calculator.service.impl.OperationServiceImpl;
@@ -83,7 +85,8 @@ public class MainActivity extends AppCompatActivity {
 
         OperationService opService = new OperationServiceImpl();
         CalculatorService calcService = new CalculatorServiceImpl();
-        RPNService service = new RPNServiceImpl(opService, calcService);
+        ArgumentSplitterService argsService = new ArgumentSplitterServiceImpl();
+        RPNService service = new RPNServiceImpl(argsService, opService, calcService);
 
         calculator = new Calculator(screen, transformer, service);
         handler = new ExceptionHandler(this);
