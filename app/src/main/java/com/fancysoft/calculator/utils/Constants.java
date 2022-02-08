@@ -29,7 +29,8 @@ public class Constants {
      * Used to split math expression into arguments
      */
 
-    public static final String ARGUMENT_PATTERN = "(?<=\\b(?:sin|cos|tan|cot))|(?<=[-+^×%√÷()])|(?=\\b(?:sin|cos|tan|cot))|(?=[-+^×%√÷()])";
+    //public static final String ARGUMENT_PATTERN = "(?<=\\b(?:sin|cos|tan|cot))|(?<=[-+^×%√÷()])|(?=\\b(?:sin|cos|tan|cot))|(?=[-+^×%√÷()])";
+    public static final String ARGUMENT_PATTERN = "(?<=[-+^×%√÷()]|sin|cos|tan|cot)|(?=[-+^×%√÷()]|sin|cos|tan|cot)";
 
     /**
      * Key to save screen state in bundle
