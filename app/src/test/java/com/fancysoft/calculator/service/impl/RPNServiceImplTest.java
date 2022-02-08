@@ -63,11 +63,11 @@ public class RPNServiceImplTest {
 
     @Test
     public void shouldConvertSimpleAlgebraicExpression() {
-        when(argsService.splitToArguments("1x2")).thenReturn(List.of("1", "x", "2"));
+        when(argsService.splitToArguments("1×2")).thenReturn(List.of("1", "×", "2"));
 
-        List<String> expected = List.of("1", "2", "x");
+        List<String> expected = List.of("1", "2", "×");
 
-        List<String> actual = service.convertToRPN("1x2");
+        List<String> actual = service.convertToRPN("1×2");
 
         assertEquals(expected, actual);
     }
@@ -114,7 +114,7 @@ public class RPNServiceImplTest {
 
     @Test
     public void shouldConvertComplexAlgebraicExpression() {
-        when(argsService.splitToArguments("1÷2x3")).thenReturn(List.of("1", "÷", "2", "x", "3"));
+        when(argsService.splitToArguments("1÷2×3")).thenReturn(List.of("1", "÷", "2", "×", "3"));
 
         doAnswer(invocation -> {
             Operation op1 = invocation.getArgument(0);
@@ -123,9 +123,9 @@ public class RPNServiceImplTest {
             return op1.ordinal() > op2.ordinal();
         }).when(opService).hasHigherPriority(any(Operation.class), any(Operation.class));
 
-        List<String> expected = List.of("1", "2", "÷", "3", "x");
+        List<String> expected = List.of("1", "2", "÷", "3", "×");
 
-        List<String> actual = service.convertToRPN("1÷2x3");
+        List<String> actual = service.convertToRPN("1÷2×3");
 
         assertEquals(expected, actual);
     }
@@ -150,8 +150,8 @@ public class RPNServiceImplTest {
 
     @Test
     public void shouldConvertExpressionWithBrackets() {
-        when(argsService.splitToArguments("1+2x(3-4^5)"))
-                .thenReturn(List.of("1", "+", "2", "x", "(", "3", "-", "4", "^", "5", ")"));
+        when(argsService.splitToArguments("1+2×(3-4^5)"))
+                .thenReturn(List.of("1", "+", "2", "×", "(", "3", "-", "4", "^", "5", ")"));
 
         doAnswer(invocation -> {
             Operation op1 = invocation.getArgument(0);
@@ -160,9 +160,9 @@ public class RPNServiceImplTest {
             return op1.ordinal() > op2.ordinal();
         }).when(opService).hasHigherPriority(any(Operation.class), any(Operation.class));
 
-        List<String> expected = List.of("1", "2", "3", "4", "5", "^", "-", "x", "+");
+        List<String> expected = List.of("1", "2", "3", "4", "5", "^", "-", "×", "+");
 
-        List<String> actual = service.convertToRPN("1+2x(3-4^5)");
+        List<String> actual = service.convertToRPN("1+2×(3-4^5)");
 
         assertEquals(expected, actual);
     }
@@ -210,7 +210,7 @@ public class RPNServiceImplTest {
 
         double expected = 6;
 
-        double actual = service.resolveRPN(List.of("2", "3", "x"));
+        double actual = service.resolveRPN(List.of("2", "3", "×"));
 
         assertEquals(expected, actual, Constants.DELTA);
     }
@@ -281,7 +281,7 @@ public class RPNServiceImplTest {
 
         double expected = 1.5;
 
-        double actual = service.resolveRPN(List.of("1", "2", "÷", "3", "x"));
+        double actual = service.resolveRPN(List.of("1", "2", "÷", "3", "×"));
 
         assertEquals(expected, actual, Constants.DELTA);
     }
@@ -335,7 +335,7 @@ public class RPNServiceImplTest {
 
         double expected = -9.0;
 
-        double actual = service.resolveRPN(List.of("1", "2", "3", "2", "3", "^", "-", "x", "+"));
+        double actual = service.resolveRPN(List.of("1", "2", "3", "2", "3", "^", "-", "×", "+"));
 
         assertEquals(expected, actual, Constants.DELTA);
     }
@@ -367,7 +367,7 @@ public class RPNServiceImplTest {
         }).when(calcService).divide(anyDouble(), anyDouble());
         double expected = 5.4;
 
-        double actual = service.resolveRPN(List.of("1", "2", "3", "4", "5", "÷", "-", "x", "+"));
+        double actual = service.resolveRPN(List.of("1", "2", "3", "4", "5", "÷", "-", "×", "+"));
 
         assertEquals(expected, actual, Constants.DELTA);
     }

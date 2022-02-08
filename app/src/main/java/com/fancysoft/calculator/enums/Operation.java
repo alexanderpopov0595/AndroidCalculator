@@ -26,7 +26,7 @@ public enum Operation {
     },
     OPEN_BRACKET(Set.of("(")),
     ARITHMETIC(Set.of("+", "-")),
-    ALGEBRAIC(Set.of("x", "÷")),
+    ALGEBRAIC(Set.of("×", "÷")),
     EXPONENT(Set.of("^", "√")),
     UNARY(Set.of("%", "sin", "cos", "tan", "cot"));
 

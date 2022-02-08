@@ -14,7 +14,7 @@
     <string name="cot">cot</string>
     <string name="percent">%</string>
     <string name="division">÷</string>
-    <string name="multiplication">x</string>
+    <string name="multiplication">×</string>
     <string name="subtraction">-</string>
     <string name="addition">+</string>
     <string name="execute">=</string>

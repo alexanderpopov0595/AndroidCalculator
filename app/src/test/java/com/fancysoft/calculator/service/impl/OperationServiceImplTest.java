@@ -53,7 +53,7 @@ public class OperationServiceImplTest {
     public void shouldReturnAlgebraicOperationGroup() {
         Operation expected = Operation.ALGEBRAIC;
 
-        Operation actual = service.getOperation("x");
+        Operation actual = service.getOperation("×");
 
         assertEquals(expected, actual);
     }

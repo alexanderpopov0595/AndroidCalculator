@@ -23,18 +23,18 @@ public class ArgumentSplitterServiceImplTest {
 
     @Test
     public void shouldSplitComplexExpression() {
-        List<String> expected = List.of("1", "+", "2", "x", "3");
+        List<String> expected = List.of("1", "+", "2", "×", "3");
 
-        List<String> actual = service.splitToArguments("1+2x3");
+        List<String> actual = service.splitToArguments("1+2×3");
 
         assertEquals(expected, actual);
     }
 
     @Test
     public void shouldSplitExpressionWithWordOperators() {
-        List<String> expected = List.of("1", "+", "2", "x", "(", "sin", "90", "-", "2", "^", "4", ")");
+        List<String> expected = List.of("1", "+", "2", "×", "(", "sin", "90", "-", "2", "^", "4", ")");
 
-        List<String> actual = service.splitToArguments("1+2x(sin90-2^4)");
+        List<String> actual = service.splitToArguments("1+2×(sin90-2^4)");
 
         assertEquals(expected, actual);
     }

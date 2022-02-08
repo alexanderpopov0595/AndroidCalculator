@@ -20,7 +20,18 @@ public class Constants {
      */
     public static final String SPACE = " ";
 
+    /**
+     * Used to check if argument is numeric
+     */
     public static final String NUMERIC_PATTERN = "-?\\d+(\\.\\d+)?";
+
+    /**
+     * Used to split math expression into arguments
+     */
+
+    public static final String ARGUMENT_PATTERN = "(?<=\\b(?:sin|cos|tan|cot))|(?<=[-+^×%√÷()])|(?=\\b(?:sin|cos|tan|cot))|(?=[-+^×%√÷()])";
+
+        //(?:[0-9-+*/^()x]|abs|e\^x|ln|log|a?(?:sin|cos|tan)h?)+
 
     /**
      * Key to save screen state in bundle

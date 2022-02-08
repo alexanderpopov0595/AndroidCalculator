@@ -89,7 +89,7 @@ public class RPNServiceImpl implements RPNService {
                 switch(arg) {
                     case "+" : c = calcService.sum(a, b); break;
                     case "-" : c = calcService.subtract(a, b); break;
-                    case "x" : c = calcService.multiply(a, b); break;
+                    case "×" : c = calcService.multiply(a, b); break;
                     case "÷" : c = calcService.divide(a, b); break;
                     case "^" : c = calcService.power(a, b); break;
                     case "√" : c = calcService.root(b, a); break;
