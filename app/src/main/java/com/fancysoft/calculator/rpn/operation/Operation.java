@@ -7,7 +7,7 @@ public interface Operation {
 
     /**
      * Allows to get operation label
-     * @return
+     * @return label
      */
     String getValue();
 
