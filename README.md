@@ -4,7 +4,7 @@ My first project for Android. It's a remake of my Java Swing calculator project,
 # Description
 As "engine" this calculator uses the Reverse Polish Notation (RPN) algorithm to process entered math expression. It allows calculator to process difficult expressions instead of simple binary (two arguments) operations.
 
-# Supported operation
+# Supported argumentType
 Calculator supports next operations:
 
 - Summation (+)

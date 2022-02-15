@@ -8,7 +8,9 @@ import static org.mockito.Mockito.when;
 
 import android.widget.TextView;
 
-import com.fancysoft.calculator.enums.ScreenMode;
+import com.fancysoft.calculator.model.screen.ScreenMode;
+import com.fancysoft.calculator.model.screen.Screen;
+import com.fancysoft.calculator.model.screen.ScreenState;
 import com.fancysoft.calculator.utils.Constants;
 import com.fancysoft.calculator.utils.Helper;
 

@@ -1,4 +1,4 @@
-package com.fancysoft.calculator.enums;
+package com.fancysoft.calculator.model.screen;
 
 /**
  * Represents input modes of the screen

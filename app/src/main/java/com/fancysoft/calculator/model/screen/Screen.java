@@ -1,8 +1,7 @@
-package com.fancysoft.calculator.model;
+package com.fancysoft.calculator.model.screen;
 
 import android.widget.TextView;
 
-import com.fancysoft.calculator.enums.ScreenMode;
 import com.fancysoft.calculator.utils.Constants;
 
 /**

@@ -10,17 +10,15 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.fancysoft.calculator.exception.handler.ExceptionHandler;
 import com.fancysoft.calculator.model.Calculator;
-import com.fancysoft.calculator.model.Screen;
-import com.fancysoft.calculator.model.ScreenState;
+import com.fancysoft.calculator.model.screen.Screen;
+import com.fancysoft.calculator.model.screen.ScreenState;
 import com.fancysoft.calculator.service.ArgumentSplitterService;
-import com.fancysoft.calculator.service.CalculatorService;
 import com.fancysoft.calculator.service.CommandTransformer;
-import com.fancysoft.calculator.service.OperationService;
+import com.fancysoft.calculator.service.ArgumentService;
 import com.fancysoft.calculator.service.RPNService;
 import com.fancysoft.calculator.service.impl.ArgumentSplitterServiceImpl;
-import com.fancysoft.calculator.service.impl.CalculatorServiceImpl;
 import com.fancysoft.calculator.service.impl.CommandTransformerImpl;
-import com.fancysoft.calculator.service.impl.OperationServiceImpl;
+import com.fancysoft.calculator.service.impl.ArgumentServiceImpl;
 import com.fancysoft.calculator.service.impl.RPNServiceImpl;
 import com.fancysoft.calculator.utils.Constants;
 
@@ -83,10 +81,9 @@ public class MainActivity extends AppCompatActivity {
         CommandTransformer transformer = new CommandTransformerImpl(this);
         transformer.init();
 
-        OperationService opService = new OperationServiceImpl();
-        CalculatorService calcService = new CalculatorServiceImpl();
+        ArgumentService opService = new ArgumentServiceImpl();
         ArgumentSplitterService argsService = new ArgumentSplitterServiceImpl();
-        RPNService service = new RPNServiceImpl(argsService, opService, calcService);
+        RPNService service = new RPNServiceImpl(argsService, opService);
 
         calculator = new Calculator(screen, transformer, service);
         handler = new ExceptionHandler(this);

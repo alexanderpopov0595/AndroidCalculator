@@ -1,5 +1,6 @@
 package com.fancysoft.calculator.model;
 
+import com.fancysoft.calculator.model.screen.Screen;
 import com.fancysoft.calculator.service.CommandTransformer;
 import com.fancysoft.calculator.service.RPNService;
 

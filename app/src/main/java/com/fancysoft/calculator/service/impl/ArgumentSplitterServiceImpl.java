@@ -12,6 +12,6 @@ public class ArgumentSplitterServiceImpl implements ArgumentSplitterService {
 
     @Override
     public List<String> splitToArguments(String expression) {
-        return Arrays.asList(expression.split(Constants.ARGUMENT_PATTERN).clone());
+        return Arrays.asList(expression.split(Constants.ARGUMENT_PATTERN));
     }
 }

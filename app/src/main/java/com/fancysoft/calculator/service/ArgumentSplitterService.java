@@ -7,5 +7,10 @@ import java.util.List;
  */
 public interface ArgumentSplitterService {
 
+    /**
+     * Splits expression into args
+     * @param expression - entered math expression
+     * @return args array
+     */
     List<String> splitToArguments(String expression);
 }

@@ -6,24 +6,19 @@ import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.RootMatchers.withDecorView;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
-import static androidx.test.espresso.matcher.ViewMatchers.withResourceName;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
-
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 
 import android.content.pm.ActivityInfo;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
-import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import java.sql.SQLOutput;
 
 @RunWith(AndroidJUnit4.class)
 public class AndroidCalculatorTest {
@@ -147,7 +142,7 @@ public class AndroidCalculatorTest {
         onView(withText("2")).perform(click());
         onView(withText("+")).perform(click());
         onView(withText("4")).perform(click());
-        onView(withText("x")).perform(click());
+        onView(withText("×")).perform(click());
         onView(withText("3")).perform(click());
 
         onView(withId(R.id.screen)).check(matches(withText("2+4×3")));
@@ -259,7 +254,7 @@ public class AndroidCalculatorTest {
     @Test
     public void shouldDisplayToastWithInvalidExpressionException() {
         onView(withText("2")).perform(click());
-        onView(withText("x")).perform(click());
+        onView(withText("×")).perform(click());
 
         onView(withText("=")).perform(click());
 
@@ -285,8 +280,7 @@ public class AndroidCalculatorTest {
         activityScenarioRule.getActivity().setRequestedOrientation(id);
         try {
             Thread.sleep(2500);
-        }
-        catch (Throwable e) {
+        } catch (Throwable e) {
             throw new RuntimeException(e);
         }
     }

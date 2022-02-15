@@ -1,6 +1,4 @@
-package com.fancysoft.calculator.model;
-
-import com.fancysoft.calculator.enums.ScreenMode;
+package com.fancysoft.calculator.model.screen;
 
 import java.io.Serializable;
 

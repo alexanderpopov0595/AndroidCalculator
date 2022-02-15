@@ -3,16 +3,15 @@ package com.fancysoft.calculator.service.impl;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyDouble;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.when;
 
-import com.fancysoft.calculator.enums.Operation;
 import com.fancysoft.calculator.exception.model.AppException;
+import com.fancysoft.calculator.rpn.ArgumentType;
+import com.fancysoft.calculator.rpn.operation.Operation;
+import com.fancysoft.calculator.service.ArgumentService;
 import com.fancysoft.calculator.service.ArgumentSplitterService;
-import com.fancysoft.calculator.service.CalculatorService;
-import com.fancysoft.calculator.service.OperationService;
 import com.fancysoft.calculator.utils.Constants;
 
 import org.junit.Before;
@@ -28,31 +27,41 @@ import java.util.List;
 public class RPNServiceImplTest {
 
     @Mock
-    private ArgumentSplitterService argsService;
+    private ArgumentSplitterService splitterService;
     @Mock
-    private OperationService opService;
-    @Mock
-    private CalculatorService calcService;
+    private ArgumentService argService;
     @InjectMocks
     private RPNServiceImpl service;
 
     @Before
     public void init() {
         doAnswer(invocation -> {
-            String operation = invocation.getArgument(0);
+            String value = invocation.getArgument(0);
 
-            for (Operation op : Operation.values()) {
-                if (op.isOperation(operation)) {
+            for (ArgumentType op : ArgumentType.values()) {
+                if (op.isOperation(value)) {
                     return op;
                 }
             }
-            throw new AppException(String.format("RPN error: operation %s is unknown", operation));
-        }).when(opService).getOperation(anyString());
+            throw new AppException(String.format("RPN error: argument type %s is unknown", value));
+        }).when(argService).getArgumentType(anyString());
+
+        doAnswer(invocation -> {
+            ArgumentType type = invocation.getArgument(0);
+            String value = invocation.getArgument(1);
+
+            for (Operation operation : type.getOperations()) {
+                if (operation.isOperation(value)) {
+                    return operation;
+                }
+            }
+            throw new AppException(String.format("RPN error: operation %s is unknown", value));
+        }).when(argService).getOperation(any(ArgumentType.class), anyString());
     }
 
     @Test
     public void shouldConvertSimpleArithmeticExpression() {
-        when(argsService.splitToArguments("1+2")).thenReturn(List.of("1", "+", "2"));
+        when(splitterService.splitToArguments("1+2")).thenReturn(List.of("1", "+", "2"));
 
         List<String> expected = List.of("1", "2", "+");
 
@@ -63,7 +72,7 @@ public class RPNServiceImplTest {
 
     @Test
     public void shouldConvertSimpleAlgebraicExpression() {
-        when(argsService.splitToArguments("1×2")).thenReturn(List.of("1", "×", "2"));
+        when(splitterService.splitToArguments("1×2")).thenReturn(List.of("1", "×", "2"));
 
         List<String> expected = List.of("1", "2", "×");
 
@@ -74,7 +83,7 @@ public class RPNServiceImplTest {
 
     @Test
     public void shouldConvertSimpleExponentExpression() {
-        when(argsService.splitToArguments("1^2")).thenReturn(List.of("1", "^", "2"));
+        when(splitterService.splitToArguments("1^2")).thenReturn(List.of("1", "^", "2"));
 
         List<String> expected = List.of("1", "2", "^");
 
@@ -85,7 +94,7 @@ public class RPNServiceImplTest {
 
     @Test
     public void shouldConvertUnaryExpression() {
-        when(argsService.splitToArguments("8%")).thenReturn(List.of("8", "%"));
+        when(splitterService.splitToArguments("8%")).thenReturn(List.of("8", "%"));
 
         List<String> expected = List.of("8", "%");
 
@@ -96,14 +105,7 @@ public class RPNServiceImplTest {
 
     @Test
     public void shouldConvertComplexArithmeticExpression() {
-        when(argsService.splitToArguments("1+2-3")).thenReturn(List.of("1", "+", "2", "-", "3"));
-
-        doAnswer(invocation -> {
-            Operation op1 = invocation.getArgument(0);
-            Operation op2 = invocation.getArgument(1);
-
-            return op1.ordinal() > op2.ordinal();
-        }).when(opService).hasHigherPriority(any(Operation.class), any(Operation.class));
+        when(splitterService.splitToArguments("1+2-3")).thenReturn(List.of("1", "+", "2", "-", "3"));
 
         List<String> expected = List.of("1", "2", "+", "3", "-");
 
@@ -114,14 +116,7 @@ public class RPNServiceImplTest {
 
     @Test
     public void shouldConvertComplexAlgebraicExpression() {
-        when(argsService.splitToArguments("1÷2×3")).thenReturn(List.of("1", "÷", "2", "×", "3"));
-
-        doAnswer(invocation -> {
-            Operation op1 = invocation.getArgument(0);
-            Operation op2 = invocation.getArgument(1);
-
-            return op1.ordinal() > op2.ordinal();
-        }).when(opService).hasHigherPriority(any(Operation.class), any(Operation.class));
+        when(splitterService.splitToArguments("1÷2×3")).thenReturn(List.of("1", "÷", "2", "×", "3"));
 
         List<String> expected = List.of("1", "2", "÷", "3", "×");
 
@@ -132,14 +127,7 @@ public class RPNServiceImplTest {
 
     @Test
     public void shouldConvertComplexExponentExpression() {
-        when(argsService.splitToArguments("2^1√4")).thenReturn(List.of("2", "^", "1", "√", "4"));
-
-        doAnswer(invocation -> {
-            Operation op1 = invocation.getArgument(0);
-            Operation op2 = invocation.getArgument(1);
-
-            return op1.ordinal() > op2.ordinal();
-        }).when(opService).hasHigherPriority(any(Operation.class), any(Operation.class));
+        when(splitterService.splitToArguments("2^1√4")).thenReturn(List.of("2", "^", "1", "√", "4"));
 
         List<String> expected = List.of("2", "1", "^", "4", "√");
 
@@ -150,15 +138,8 @@ public class RPNServiceImplTest {
 
     @Test
     public void shouldConvertExpressionWithBrackets() {
-        when(argsService.splitToArguments("1+2×(3-4^5)"))
+        when(splitterService.splitToArguments("1+2×(3-4^5)"))
                 .thenReturn(List.of("1", "+", "2", "×", "(", "3", "-", "4", "^", "5", ")"));
-
-        doAnswer(invocation -> {
-            Operation op1 = invocation.getArgument(0);
-            Operation op2 = invocation.getArgument(1);
-
-            return op1.ordinal() > op2.ordinal();
-        }).when(opService).hasHigherPriority(any(Operation.class), any(Operation.class));
 
         List<String> expected = List.of("1", "2", "3", "4", "5", "^", "-", "×", "+");
 
@@ -169,7 +150,7 @@ public class RPNServiceImplTest {
 
     @Test
     public void shouldConvertExpressionWithDots() {
-        when(argsService.splitToArguments("1.1+2.2")).thenReturn(List.of("1.1", "+", "2.2"));
+        when(splitterService.splitToArguments("1.1+2.2")).thenReturn(List.of("1.1", "+", "2.2"));
 
         List<String> expected = List.of("1.1", "2.2", "+");
 
@@ -180,19 +161,13 @@ public class RPNServiceImplTest {
 
     @Test
     public void shouldThrowExceptionWhenOperationIsUnknown() {
-        when(argsService.splitToArguments("1?2"))
+        when(splitterService.splitToArguments("1?2"))
                 .thenReturn(List.of("1", "?", "2"));
         assertThrows(AppException.class, () -> service.convertToRPN("1?2"));
     }
 
     @Test
     public void shouldResolveSimpleArithmeticRpn() {
-        doAnswer(invocation -> {
-            double a = (double) invocation.getArguments()[0];
-            double b = (double) invocation.getArguments()[1];
-            return a + b;
-        }).when(calcService).sum(anyDouble(), anyDouble());
-
         double expected = 3;
 
         double actual = service.resolveRPN(List.of("1", "2", "+"));
@@ -202,12 +177,6 @@ public class RPNServiceImplTest {
 
     @Test
     public void shouldResolveSimpleAlgebraicRpn() {
-        doAnswer(invocation -> {
-            double a = (double) invocation.getArguments()[0];
-            double b = (double) invocation.getArguments()[1];
-            return a * b;
-        }).when(calcService).multiply(anyDouble(), anyDouble());
-
         double expected = 6;
 
         double actual = service.resolveRPN(List.of("2", "3", "×"));
@@ -217,12 +186,6 @@ public class RPNServiceImplTest {
 
     @Test
     public void shouldResolveSimpleExponentRpn() {
-        doAnswer(invocation -> {
-            double a = (double) invocation.getArguments()[0];
-            double b = (double) invocation.getArguments()[1];
-            return Math.pow(a, b);
-        }).when(calcService).power(anyDouble(), anyDouble());
-
         double expected = 8;
 
         double actual = service.resolveRPN(List.of("2", "3", "^"));
@@ -232,11 +195,6 @@ public class RPNServiceImplTest {
 
     @Test
     public void shouldResolveUnaryRpn() {
-        doAnswer(invocation -> {
-            double a = (double) invocation.getArguments()[0];
-            return a / 100;
-        }).when(calcService).percent(anyDouble());
-
         double expected = 0.08;
 
         double actual = service.resolveRPN(List.of("8", "%"));
@@ -246,18 +204,6 @@ public class RPNServiceImplTest {
 
     @Test
     public void shouldResolveComplexArithmeticRpn() {
-        doAnswer(invocation -> {
-            double a = (double) invocation.getArguments()[0];
-            double b = (double) invocation.getArguments()[1];
-            return a + b;
-        }).when(calcService).sum(anyDouble(), anyDouble());
-
-        doAnswer(invocation -> {
-            double a = (double) invocation.getArguments()[0];
-            double b = (double) invocation.getArguments()[1];
-            return a - b;
-        }).when(calcService).subtract(anyDouble(), anyDouble());
-
         double expected = 0;
 
         double actual = service.resolveRPN(List.of("1", "2", "+", "3", "-"));
@@ -267,18 +213,6 @@ public class RPNServiceImplTest {
 
     @Test
     public void shouldResolveComplexAlgebraicRpn() {
-        doAnswer(invocation -> {
-            double a = (double) invocation.getArguments()[0];
-            double b = (double) invocation.getArguments()[1];
-            return a * b;
-        }).when(calcService).multiply(anyDouble(), anyDouble());
-
-        doAnswer(invocation -> {
-            double a = (double) invocation.getArguments()[0];
-            double b = (double) invocation.getArguments()[1];
-            return a / b;
-        }).when(calcService).divide(anyDouble(), anyDouble());
-
         double expected = 1.5;
 
         double actual = service.resolveRPN(List.of("1", "2", "÷", "3", "×"));
@@ -288,18 +222,6 @@ public class RPNServiceImplTest {
 
     @Test
     public void shouldResolveComplexExponentRpn() {
-        doAnswer(invocation -> {
-            double a = (double) invocation.getArguments()[0];
-            double b = (double) invocation.getArguments()[1];
-            return Math.pow(a, b);
-        }).when(calcService).power(anyDouble(), anyDouble());
-
-        doAnswer(invocation -> {
-            double a = (double) invocation.getArguments()[0];
-            double b = (double) invocation.getArguments()[1];
-            double power = Math.pow(a, 1.0 / b);
-            return (double) Math.round(power);
-        }).when(calcService).root(anyDouble(), anyDouble());
         double expected = 2;
 
         double actual = service.resolveRPN(List.of("2", "1", "^", "4", "√"));
@@ -309,30 +231,6 @@ public class RPNServiceImplTest {
 
     @Test
     public void shouldResolveComplexMixedRpn() {
-        doAnswer(invocation -> {
-            double a = (double) invocation.getArguments()[0];
-            double b = (double) invocation.getArguments()[1];
-            return a + b;
-        }).when(calcService).sum(anyDouble(), anyDouble());
-
-        doAnswer(invocation -> {
-            double a = (double) invocation.getArguments()[0];
-            double b = (double) invocation.getArguments()[1];
-            return a * b;
-        }).when(calcService).multiply(anyDouble(), anyDouble());
-
-        doAnswer(invocation -> {
-            double a = (double) invocation.getArguments()[0];
-            double b = (double) invocation.getArguments()[1];
-            return Math.pow(a, b);
-        }).when(calcService).power(anyDouble(), anyDouble());
-
-        doAnswer(invocation -> {
-            double a = (double) invocation.getArguments()[0];
-            double b = (double) invocation.getArguments()[1];
-            return a - b;
-        }).when(calcService).subtract(anyDouble(), anyDouble());
-
         double expected = -9.0;
 
         double actual = service.resolveRPN(List.of("1", "2", "3", "2", "3", "^", "-", "×", "+"));
@@ -342,29 +240,6 @@ public class RPNServiceImplTest {
 
     @Test
     public void shouldResolveRpnWithBrackets() {
-        doAnswer(invocation -> {
-            double a = (double) invocation.getArguments()[0];
-            double b = (double) invocation.getArguments()[1];
-            return a + b;
-        }).when(calcService).sum(anyDouble(), anyDouble());
-
-        doAnswer(invocation -> {
-            double a = (double) invocation.getArguments()[0];
-            double b = (double) invocation.getArguments()[1];
-            return a - b;
-        }).when(calcService).subtract(anyDouble(), anyDouble());
-
-        doAnswer(invocation -> {
-            double a = (double) invocation.getArguments()[0];
-            double b = (double) invocation.getArguments()[1];
-            return a * b;
-        }).when(calcService).multiply(anyDouble(), anyDouble());
-
-        doAnswer(invocation -> {
-            double a = (double) invocation.getArguments()[0];
-            double b = (double) invocation.getArguments()[1];
-            return a / b;
-        }).when(calcService).divide(anyDouble(), anyDouble());
         double expected = 5.4;
 
         double actual = service.resolveRPN(List.of("1", "2", "3", "4", "5", "÷", "-", "×", "+"));
@@ -374,12 +249,6 @@ public class RPNServiceImplTest {
 
     @Test
     public void shouldResolveExpressionWithDots() {
-        doAnswer(invocation -> {
-            double a = (double) invocation.getArguments()[0];
-            double b = (double) invocation.getArguments()[1];
-            return a + b;
-        }).when(calcService).sum(anyDouble(), anyDouble());
-
         double expected = 3.3;
 
         double actual = service.resolveRPN(List.of("1.1", "2.2", "+"));

@@ -4,6 +4,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.fancysoft.calculator.model.screen.Screen;
 import com.fancysoft.calculator.service.CommandTransformer;
 import com.fancysoft.calculator.service.RPNService;
 
